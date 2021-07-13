@@ -26,10 +26,3 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 }
-
-export interface IUser {
-  id?: number;
-  firstName: string;
-  lastName: string;
-  isActive?: boolean;
-}

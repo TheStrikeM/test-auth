@@ -12,7 +12,6 @@ import AuthModule from './modules/auth/auth.module';
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfig,
     }),
-    TypeOrmModule.forFeature([User]),
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,
