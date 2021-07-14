@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import UserRepository from './repositories/user.repository';
 import CryptoModule from '../crypto/crypto.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.schema';
+import { UserRepository } from './repositories/user.repository';
+import UserService from "./repositories/user.service";
 
 @Module({
-  imports: [CryptoModule, TypeOrmModule.forFeature([User])],
-  providers: [UserRepository],
-  exports: [UserRepository],
+  imports: [CryptoModule, TypeOrmModule.forFeature([UserRepository])],
+  providers: [UserService],
+  exports: [TypeOrmModule, UserService],
 })
 export default class UserModule {}

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import crypto from 'crypto';
+import { createCipher, createDecipher } from 'crypto';
 
 @Injectable()
 export default class CryptoService {
@@ -13,14 +13,14 @@ export default class CryptoService {
   }
 
   encrypt(text: string) {
-    const cipher = crypto.createCipher(this.algorithm, this.password);
+    const cipher = createCipher(this.algorithm, this.password);
     let encryptedText = cipher.update(text, 'utf8', 'hex');
     encryptedText += cipher.final('hex');
     return encryptedText;
   }
 
   decrypt(text: string) {
-    const decipher = crypto.createDecipher(this.algorithm, this.password);
+    const decipher = createDecipher(this.algorithm, this.password);
     let decryptedText = decipher.update(text, 'hex', 'utf8');
     decryptedText += decipher.final('utf8');
     return decryptedText;
