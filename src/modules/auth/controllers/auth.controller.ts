@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common';
 import AuthService from '../services/auth.service';
 import JwtGuard from '../guards/jwt.guard';
-import { hasRoles } from '../decorators/roles.decorator';
 import { UserRole } from '../../user/interfaces/UserRoleInterface';
-import RolesGuard from '../guards/roles.guard';
+import RolesGuard from '../guards/role.guard';
+import { hasRoles } from '../decorators/role.decorator';
 
 @Controller('auth')
 export default class AuthController {
@@ -33,16 +33,9 @@ export default class AuthController {
   }
 
   @UseGuards(JwtGuard, RolesGuard)
-  @hasRoles(UserRole.ADMIN)
+  @hasRoles(UserRole.USER)
   @Get('success-role')
   getSuccessRole(@Request() req) {
     console.log(req.user);
-  }
-
-  @UseGuards(JwtGuard)
-  @Get('test')
-  testFunc(@Request() req) {
-    const { username, password } = req.user;
-    return this.authService.validateUserWithPassword({ username, password });
   }
 }

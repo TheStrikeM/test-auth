@@ -36,12 +36,6 @@ export default class AuthService {
     return user;
   }
 
-  async validateUserWithPassword(user: LoginUserDto): Promise<boolean> {
-    const verifiedUser = await this.userRepository.findOneMan(user);
-    if (!verifiedUser) return false;
-    return true;
-  }
-
   async register(dto: RegisterUserDto): Promise<RegisterStatus> {
     let status: RegisterStatus = {
       success: true,
