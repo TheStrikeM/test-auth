@@ -18,7 +18,7 @@ export default class UserService {
 
   async findOneMan(options?: object): Promise<DefaultUserDto> {
     const user: User = await this.userRepo.findOne(options);
-    return toUserDto(user);
+    return user;
   }
 
   async findByLogin({

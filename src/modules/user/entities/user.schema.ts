@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { UserRole } from "../interfaces/UserRoleInterface";
 
 @Entity()
 export class User {
@@ -17,12 +18,15 @@ export class User {
   @Column({ type: Date })
   registerDate: Date;
 
-  @Column()
+  @Column({ type: 'varchar' })
   firstName: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   lastName: string;
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
+  role: UserRole;
 }

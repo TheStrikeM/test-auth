@@ -1,27 +1,48 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import AuthService from '../services/auth.service';
 import JwtGuard from '../guards/jwt.guard';
-import LocalGuard from '../guards/local.guard';
+import { hasRoles } from '../decorators/roles.decorator';
+import { UserRole } from '../../user/interfaces/UserRoleInterface';
+import RolesGuard from '../guards/roles.guard';
 
 @Controller('auth')
 export default class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() dto) {
+  login(@Body() dto) {
     return this.authService.login(dto);
   }
 
   @Post('reg')
-  async register(@Body() dto) {
+  register(@Body() dto) {
     return this.authService.register(dto);
   }
 
   @UseGuards(JwtGuard)
   @Get('success')
-  async getSuccess() {
-    return {
-      message: 'Ураааа!',
-    };
+  getSuccess(@Request() req) {
+    console.log(req.user);
+  }
+
+  @UseGuards(JwtGuard, RolesGuard)
+  @hasRoles(UserRole.ADMIN)
+  @Get('success-role')
+  getSuccessRole(@Request() req) {
+    console.log(req.user);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('test')
+  testFunc(@Request() req) {
+    const { username, password } = req.user;
+    return this.authService.validateUserWithPassword({ username, password });
   }
 }

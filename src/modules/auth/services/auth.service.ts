@@ -25,11 +25,21 @@ export default class AuthService {
     };
   }
 
+  async getInfo({ username }) {
+    return this.userRepository.findByPayload({ username });
+  }
+
   async validateUser(payload: JwtPayload): Promise<DefaultUserDto> {
     const user = await this.userRepository.findByPayload(payload);
     if (!user)
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     return user;
+  }
+
+  async validateUserWithPassword(user: LoginUserDto): Promise<boolean> {
+    const verifiedUser = await this.userRepository.findOneMan(user);
+    if (!verifiedUser) return false;
+    return true;
   }
 
   async register(dto: RegisterUserDto): Promise<RegisterStatus> {
